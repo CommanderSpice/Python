@@ -6,7 +6,7 @@ build_intarray(PyObject* list)
   Py_ssize_t i;
   for (i=0;i<n;i++)
   {
-    array[i]=(int)PyInt_AS_LONG(PyList_GetItem(list, i));
+    array[i]=(int)PyLong_AS_LONG(PyList_GetItem(list, i));
   }
   return array;
 }

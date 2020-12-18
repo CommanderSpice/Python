@@ -7,14 +7,14 @@
 {% endif %}
 
 {% if ("int" in type) and not ("int*" in type) %}
-        (({{structname}}*)data)->{{member}} = PyInt_AS_LONG(PyDict_GetItemString(command, "{{member}}"));
+        (({{structname}}*)data)->{{member}} = PyLong_AS_LONG(PyDict_GetItemString(command, "{{member}}"));
 {% endif %}
 
 {% if "char" in type %}
         (({{structname}}*)data)->{{member}} = PyString_AS_STRING(PyDict_GetItemString(command, "{{member}}"));
 {% endif %}
 {% if "bool" in type %}
-        (({{structname}}*)data)->{{member}} = (bool)PyInt_AS_LONG(PyDict_GetItemString(command, "{{member}}"));
+        (({{structname}}*)data)->{{member}} = (bool)PyLong_AS_LONG(PyDict_GetItemString(command, "{{member}}"));
 {% endif %}
 {% if "SAIFloat3" in type %}
         (({{structname}}*)data)->{{member}} = *(build_SAIFloat3(PyDict_GetItemString(command, "{{member}}")));

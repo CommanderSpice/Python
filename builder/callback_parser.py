@@ -53,9 +53,9 @@ def buildcall(funcname, args, rettype):
 			if not "MAP" in funcname:
 				# get the listsize from the prelast parameter
 				if ptype=="struct SAIFloat3*":
-					prelude += varname+"=malloc(sizeof("+ptype[:-1]+")*PyInt_AS_LONG(PyTuple_GetItem(args, "+str(last_index)+")));\n"
+					prelude += varname+"=malloc(sizeof("+ptype[:-1]+")*PyLong_AS_LONG(PyTuple_GetItem(args, "+str(last_index)+")));\n"
 				else:
-					prelude += varname+"=malloc(sizeof("+ptype+")*PyInt_AS_LONG(PyTuple_GetItem(args, "+str(last_index)+")));\n"
+					prelude += varname+"=malloc(sizeof("+ptype+")*PyLong_AS_LONG(PyTuple_GetItem(args, "+str(last_index)+")));\n"
 			else:
 				# MAP functions use another function for the list size and you cannot specify the max listlength
 				# as parameter
@@ -91,7 +91,7 @@ def buildcall(funcname, args, rettype):
 
 		elif ptype=="int":
 			prelude = ptype + " " + varname + "="
-			prelude += "PyInt_AS_LONG(PyTuple_GetItem(args, "+str(index)+"));\n"
+			prelude += "PyLong_AS_LONG(PyTuple_GetItem(args, "+str(index)+"));\n"
 			call += varname + ","
 			call = prelude + call
 
@@ -103,7 +103,7 @@ def buildcall(funcname, args, rettype):
 
 		elif ptype=="bool":
 			prelude = ptype + " " + varname + "="
-			prelude += "(bool)PyInt_AS_LONG(PyTuple_GetItem(args,"+str(index)+"));\n"
+			prelude += "(bool)PyLong_AS_LONG(PyTuple_GetItem(args,"+str(index)+"));\n"
 			call += varname + ","
 			call = prelude + call
 
@@ -122,10 +122,10 @@ def buildcall(funcname, args, rettype):
 		elif ("void*") in ptype and ("commandData" in pname):
 
 			prelude = "void* commandData="
-			prelude += "command_convert((int)PyInt_AS_LONG(PyTuple_GetItem(args, "+str(index-1)+")), PyTuple_GetItem(args, "+str(index)+"));\n"
+			prelude += "command_convert((int)PyLong_AS_LONG(PyTuple_GetItem(args, "+str(index-1)+")), PyTuple_GetItem(args, "+str(index)+"));\n"
 			call += "commandData,"
 			call = prelude + call
-			reverse = ("void","command_reverse((int)PyInt_AS_LONG(PyTuple_GetItem(args, "+str(index-1)+")),commandData)",1)
+			reverse = ("void","command_reverse((int)PyLong_AS_LONG(PyTuple_GetItem(args, "+str(index-1)+")),commandData)",1)
 
 		else:
 			call += "NULL,"
