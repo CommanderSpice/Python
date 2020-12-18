@@ -75,7 +75,7 @@ int loadPythonInterpreter(const char *pythonVersion){
 			hPython=sharedLib_load(filename);
 			if (hPython!=NULL)
 				break;
-			*p=tmpPythonName[i+1]; //set start for next try
+			p=&tmpPythonName[i+1]; //set start for next try
 		}
 	}
 	if (hPython == NULL){
