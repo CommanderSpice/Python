@@ -61,7 +61,7 @@ int loadPythonInterpreter(const char *pythonVersion){
 	}
 	strncpy(tmpPythonName,pythonVersion, FILEPATH_MAXSIZE);
 	p=&tmpPythonName[0];
-	for(i=0; i<len; i++){//extract strings and try to load the python versions
+	for(i=0; i<=len; i++){//extract strings and try to load the python versions
 		if ((tmpPythonName[i]==' ') || (tmpPythonName[i]==0)){
 			tmpPythonName[i]=0;
 			#ifdef WIN32
