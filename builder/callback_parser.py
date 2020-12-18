@@ -97,7 +97,7 @@ def buildcall(funcname, args, rettype):
 
 		elif ptype=="const char* const" or ptype=="const char*":
 			prelude = ptype + " " + varname + "="
-			prelude += "PyString_AS_STRING(PyTuple_GetItem(args, "+str(index)+"));\n"
+			prelude += "PyBytes_AS_STRING(PyUnicode_AsUTF8String(PyTuple_GetItem(args, "+str(index)+")));\n"
 			call += varname + ","
 			call = prelude + call
 

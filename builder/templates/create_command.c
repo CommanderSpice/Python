@@ -11,7 +11,7 @@
 {% endif %}
 
 {% if "char" in type %}
-        (({{structname}}*)data)->{{member}} = PyString_AS_STRING(PyDict_GetItemString(command, "{{member}}"));
+        (({{structname}}*)data)->{{member}} = PyBytes_AS_STRING(PyUnicode_AsUTF8String(PyDict_GetItemString(command, "{{member}}")));
 {% endif %}
 {% if "bool" in type %}
         (({{structname}}*)data)->{{member}} = (bool)PyLong_AS_LONG(PyDict_GetItemString(command, "{{member}}"));
