@@ -251,7 +251,7 @@ getLevelOfSupportFor(const char* engineVersion, int engineAIInterfaceGeneratedVe
 static struct SSkirmishAILibrary* mySSkirmishAILibrary = NULL;
 
 enum LevelOfSupport CALLING_CONV proxy_skirmishAI_getLevelOfSupportFor(
-		int teamId,
+		const char* aiShortName, const char* aiVersion,
 		const char* engineVersionString, int engineVersionNumber,
 		const char* aiInterfaceShortName, const char* aiInterfaceVersion) {
 
