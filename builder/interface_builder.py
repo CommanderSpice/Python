@@ -268,7 +268,7 @@ def commandfuncs(commands):
 		code += args+"):\n"
 		code += cInd + dictbuild + "\n"
 		code += cInd + "Command.id+=1" + "\n"
-		code += cInd + "retval = "+CALLBACK+".Clb_Engine_handleCommand("+TEAMID+", -1, Command.id,"+command+",data)" + "\n"
+		code += cInd + "retval = "+CALLBACK+".Engine_handleCommand("+TEAMID+", -1, Command.id,"+command+",data)" + "\n"
 		code += cInd + "if retval:\n"
 		code += cInd + INDENTATION + "return Command.id, retval\n"
 		code += cInd + "return Command.id\n"

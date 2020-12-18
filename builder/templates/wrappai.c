@@ -244,14 +244,14 @@ int CALLING_CONV python_handleEvent(int teamId, int topic, const void* data)
 int CALLING_CONV python_init(int teamId, const struct SSkirmishAICallback* aiCallback)
 {
 	simpleLog_log("python_init()");
-	const char* className = aiCallback->Clb_SkirmishAI_Info_getValueByKey(teamId,
+	const char* className = aiCallback->SkirmishAI_Info_getValueByKey(teamId,
 			PYTHON_SKIRMISH_AI_PROPERTY_CLASS_NAME);
 	simpleLog_log("Name of the AI: %s",className);
-	const char* modName = aiCallback->Clb_SkirmishAI_Info_getValueByKey(teamId,
+	const char* modName = aiCallback->SkirmishAI_Info_getValueByKey(teamId,
 			PYTHON_SKIRMISH_AI_PROPERTY_MODULE_NAME);
 	simpleLog_log("Python Class Name: %s",modName);
 
-	const char* aipath = aiCallback->Clb_DataDirs_getConfigDir(teamId);
+	const char* aipath = aiCallback->DataDirs_getConfigDir(teamId);
 	PyObject* aimodule = pythonLoadModule(modName, aipath);	
 	if (!aimodule) {
 	  return -1;
