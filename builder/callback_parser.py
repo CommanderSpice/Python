@@ -140,10 +140,8 @@ def getcallback_functions(filename):
 	f=open(filename, "r")
 
 	stream = f.read()
-
-	ouput = re.findall(regex.CALLBACK_FUNCTIONS, stream)
-
 	output = re.findall(regex.CALLBACK_FUNCTIONS, stream)
+
 	functionData = {}
 	functionCalls = {}
 
