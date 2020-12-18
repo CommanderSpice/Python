@@ -27,7 +27,7 @@ class BaseAI(object):
 	def bindFunction(self, function, event):
 		""" binds a function for one team to an event
 		"""
-		assert self._ais.has_key(self.team.teamId), "team not found"
+		assert self.team.teamId in self._ais, "team not found"
 		assert isinstance(event, int), "wrong event type"
 		self._ais[self.team.teamId][event] = function
 	def __repr__(self):

@@ -74,7 +74,7 @@ def buildclasses(funclist):
 				# amount for the corresponding object
 				i = funcname.find("MULTI1SIZE")
 				valfunc = funcname[:i]+"MULTI1VALS"+funcname[i+len("MULTI1SIZE"):]
-				if funclist.has_key(valfunc):
+				if valfunc in funclist:
 					continue
 				else:
 					pyfuncname="getCount"
@@ -217,7 +217,7 @@ def buildclasses(funclist):
 		functionstring += assertstring
 		functionstring += cInd + call + "\n"
 		
-		if not retval.has_key(classes[-1]):
+		if not classes[-1] in retval:
 			retval[classes[-1]] = []
 		
 		retval[classes[-1]].append(functionstring)
