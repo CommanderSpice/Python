@@ -152,7 +152,7 @@ initStatic(int _interfaceId, const struct SAIInterfaceCallback* _callback)
 			ddw, ddw_sizeMax,
 			"", true, true, true, false);
 		if (!ddwFetched) {
-			simpleLog_logL(SIMPLELOG_LEVEL_ERROR,
+			simpleLog_logL(LOG_LEVEL_ERROR,
 				"Failed locating writeable data-dir \"%s\"", ddw);
 		}
 		int p;
@@ -164,61 +164,32 @@ initStatic(int _interfaceId, const struct SAIInterfaceCallback* _callback)
 		}
 	}
 	// ### try to fetch the log-level from the properties ###
-	int logLevel = SIMPLELOG_LEVEL_FINEST;
+	int logLevel = LOG_LEVEL_DEBUG;
 	const char* logLevel_str =
 		util_map_getValueByKey(numProps, propKeys, (const char**)propValues,
 		"log.level");
 
 	if (logLevel_str != NULL) {
 		int logLevel_tmp = atoi(logLevel_str);
-		if (logLevel_tmp >= SIMPLELOG_LEVEL_ERROR
-			&& logLevel_tmp <= SIMPLELOG_LEVEL_FINEST) {
+		if (logLevel_tmp >= LOG_LEVEL_ALL
+			&& logLevel_tmp <= LOG_LEVEL_FATAL) {
 			logLevel = logLevel_tmp;
 		}
 	}
 
-	// ### try to fetch whether to use time-stamps from the properties ###
-	bool useTimeStamps = true;
-	const char* useTimeStamps_str =
-		util_map_getValueByKey(numProps, propKeys, (const char**)propValues,
-		"log.useTimeStamps");
-	if (useTimeStamps_str != NULL) {
-		useTimeStamps = util_strToBool(useTimeStamps_str);
-	}
-
-	// ### init the log file ###
-	char* logFile = util_allocStrCpy(
-		util_map_getValueByKey(numProps, propKeys, (const char**)propValues,
-		"log.file"));
-	if (logFile == NULL) {
-		logFile = util_allocStrCatFSPath(2, "log", MY_LOG_FILE);
-	}
-
-	static const unsigned int logFilePath_sizeMax = 1024;
-	char logFilePath[logFilePath_sizeMax];
-	// eg: "~/.spring/AI/Interfaces/Python/${INTERFACE_PROPERTIES_FILE}"
-	bool logFileFetched = callback->DataDirs_locatePath(interfaceId,
-		logFilePath, logFilePath_sizeMax,
-		logFile, true, true, false, false);
-
-	if (logFileFetched) {
-		simpleLog_init(logFilePath, useTimeStamps, logLevel, false);
-	} else {
-		simpleLog_logL(SIMPLELOG_LEVEL_ERROR,
-				"Failed initializing log-file \"%s\"", logFileFetched);
-	}
+	simpleLog_initcallback(interfaceId, "Python Interface", callback->Log_logsl, logLevel);
 
 	// log settings loaded from interface config file
 	if (propFileFetched) {
-		simpleLog_logL(SIMPLELOG_LEVEL_FINE, "settings loaded from: %s",
+		simpleLog_logL(LOG_LEVEL_INFO, "settings loaded from: %s",
 			propFilePath);
 		int p;
 		for (p=0; p < numProps; ++p) {
-			simpleLog_logL(SIMPLELOG_LEVEL_FINE, "\t%i: %s = %s",
+			simpleLog_logL(LOG_LEVEL_INFO, "\t%i: %s = %s",
 				p, propKeys[p], propValues[p]);
 		}
 	} else {
-		simpleLog_logL(SIMPLELOG_LEVEL_FINE, "settings NOT loaded from: %s",
+		simpleLog_logL(LOG_LEVEL_INFO, "settings NOT loaded from: %s",
 			propFilePath);
 	}
 
@@ -226,14 +197,12 @@ initStatic(int _interfaceId, const struct SAIInterfaceCallback* _callback)
 		myShortName, myVersion);
 	simpleLog_log("Using read/write data-directory: %s",
 		callback->DataDirs_getWriteableDir(interfaceId));
-	simpleLog_log("Using log file: %s", logFilePath);
 	const char* pythonVersion_str =
 		util_map_getValueByKey(numProps, propKeys, (const char**)propValues,
 		"python.version");
 	if (pythonVersion_str==NULL)
 		pythonVersion_str=PYTHON_LOAD_ORDER;
 	int res=loadPythonInterpreter(pythonVersion_str);
-	FREE(logFile);
 	return res;
 }
 
@@ -292,7 +261,7 @@ enum LevelOfSupport CALLING_CONV proxy_skirmishAI_getLevelOfSupportFor(
 EXPORT(const struct SSkirmishAILibrary*)
 loadSkirmishAILibrary(const char* const shortName, const char* const version) 
 {
-	simpleLog_logL(SIMPLELOG_LEVEL_FINE, "loadSkirmishAILibrary()");
+	simpleLog_logL(LOG_LEVEL_INFO, "loadSkirmishAILibrary()");
 	if (mySSkirmishAILibrary == NULL) {
 		mySSkirmishAILibrary =
 			(struct SSkirmishAILibrary*) malloc(sizeof(struct SSkirmishAILibrary));
@@ -304,7 +273,7 @@ loadSkirmishAILibrary(const char* const shortName, const char* const version)
 		mySSkirmishAILibrary->release = &python_release;
 		mySSkirmishAILibrary->handleEvent = &python_handleEvent;
 	}
-	simpleLog_logL(SIMPLELOG_LEVEL_FINE, "loadSkirmishAILibrary() done");
+	simpleLog_logL(LOG_LEVEL_INFO, "loadSkirmishAILibrary() done");
 	return mySSkirmishAILibrary;
 }
 /**
