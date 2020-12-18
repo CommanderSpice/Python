@@ -11,8 +11,9 @@ def dict_helper(vals, keys):
 		yield (keys[i],v)
 
 def check_float3(value):
-	assert isinstance(value, tuple)
-	assert reduce(lambda x,y: x and y, [isinstance(i, float) for i in value])
+	assert isinstance(value, tuple), "No tuple given"
+	for i in value:
+		assert isinstance(i, float), "Tuple elements are not floats"
 
 {% for cmd in cmd_types %}
 {{cmd}}={{str(cmd_types[cmd])}}
